@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Hotels{% endblock %}
+{% block content %}
+<section class="search-band">
+  <h1>Find stays that fit the trip</h1>
+  <form method="get" class="search-grid">
+    {{ form.q }}
+    {{ form.location }}
+    {{ form.min_price }}
+    {{ form.max_price }}
+    {{ form.purpose }}
+    {{ form.sort }}
+    <button class="primary" type="submit">Search</button>
+    <label class="inline-check">{{ form.women_safe }} Women-safe</label>
+    <label class="inline-check">{{ form.emergency }} Emergency ready</label>
+    <label class="inline-check">{{ form.verified }} Photo verified</label>
+  </form>
+</section>
+
+<section class="hotel-grid">
+  {% for hotel in hotels %}
+    <article class="hotel-card">
+      {% if hotel.primary_image %}
+        <img src="{{ hotel.primary_image }}" alt="{{ hotel.name }}">
+      {% else %}
+        <div class="image-placeholder">{{ hotel.location }}</div>
+      {% endif %}
+      <div class="hotel-body">
+        <div class="hotel-title">
+          <h2>{{ hotel.name }}</h2>
+          <span>{{ hotel.rating }} / 5</span>
+        </div>
+        <div class="score-row">
+          <span class="score strong">{{ hotel.match_score }}% match</span>
+          <span class="score">Trust {{ hotel.trust_score }}</span>
+          <span class="score">{{ hotel.market_fairness }}</span>
+        </div>
+        <p class="muted">{{ hotel.location }}</p>
+        <p>{{ hotel.description|truncatewords:22 }}</p>
+        <div class="proof-grid">
+          {% if hotel.verified_photos %}<span>Photo verified</span>{% endif %}
+          {% if hotel.is_women_friendly %}<span>Women-safe</span>{% endif %}
+          {% if hotel.emergency_ready %}<span>Emergency ready</span>{% endif %}
+          {% if hotel.workspace_ready %}<span>Work-ready</span>{% endif %}
+        </div>
+        <div class="chips">
+          {% for amenity in hotel.amenities.all|slice:":4" %}
+            <span>{{ amenity.name }}</span>
+          {% endfor %}
+        </div>
+        <div class="price-row">
+          <strong>Rs. {{ hotel.offer_price }}</strong>
+          <span>per night</span>
+          <a class="secondary" href="{{ hotel.get_absolute_url }}">View details</a>
+        </div>
+      </div>
+    </article>
+  {% empty %}
+    <p class="empty">No hotels matched your filters.</p>
+  {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}OTP login{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div>
+    <h1>OTP login</h1>
+    <p class="muted">For local development the OTP is shown as a message after you submit your email.</p>
+  </div>
+  <form method="post" class="panel form-grid">
+    {% csrf_token %}
+    <p><label>Email <input type="email" name="email" value="{{ email }}" required></label></p>
+    {% if show_otp %}
+      <p><label>OTP <input type="text" name="otp" inputmode="numeric" required></label></p>
+    {% endif %}
+    <button class="primary" type="submit">{% if show_otp %}Verify OTP{% else %}Send OTP{% endif %}</button>
+  </form>
+</section>
+{% endblock %}

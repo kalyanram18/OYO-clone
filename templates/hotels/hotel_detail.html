@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}{{ hotel.name }}{% endblock %}
+{% block content %}
+<section class="detail-layout">
+  <div>
+    <div class="gallery">
+      {% for image in hotel.images.all %}
+        <img src="{{ image.image.url }}" alt="{{ image.caption|default:hotel.name }}">
+      {% empty %}
+        {% if hotel.cover_image_url %}
+          <img src="{{ hotel.cover_image_url }}" alt="{{ hotel.name }}">
+        {% else %}
+          <div class="image-placeholder large">{{ hotel.location }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <h1>{{ hotel.name }}</h1>
+    <p class="muted">{{ hotel.location }}</p>
+    <div class="insight-strip">
+      <div><strong>{{ hotel.trust_score }}</strong><span>Trust score - {{ hotel.trust_label }}</span></div>
+      <div><strong>{{ hotel.safety_score }}%</strong><span>Safety readiness</span></div>
+      <div><strong>{{ hotel.market_fairness }}</strong><span>Price fairness</span></div>
+    </div>
+    <p>{{ hotel.description }}</p>
+    <div class="proof-grid roomy">
+      {% if hotel.verified_photos %}<span>Verified room photos</span>{% endif %}
+      {% if hotel.has_24x7_reception %}<span>24/7 reception</span>{% endif %}
+      {% if hotel.has_cctv %}<span>CCTV in common areas</span>{% endif %}
+      {% if hotel.has_verified_staff %}<span>Verified staff</span>{% endif %}
+      {% if hotel.has_well_lit_area %}<span>Well-lit location</span>{% endif %}
+      {% if hotel.supports_late_checkin %}<span>Late check-in</span>{% endif %}
+      {% if hotel.local_experience_bundle %}<span>{{ hotel.local_experience_bundle }}</span>{% endif %}
+    </div>
+    <div class="chips">
+      {% for amenity in hotel.amenities.all %}
+        <span>{{ amenity.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  <aside class="panel booking-panel">
+    <h2>Rs. {{ hotel.offer_price }} <span>per night</span></h2>
+    <p class="muted">{{ hotel.reliability_summary }}</p>
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="primary" type="submit">Confirm booking</button>
+    </form>
+  </aside>
+</section>
+{% endblock %}

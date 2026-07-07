@@ -1,0 +1,39 @@
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Hotel</th>
+        {% if show_customer %}<th>Customer</th>{% endif %}
+        <th>Dates</th>
+        <th>Nights</th>
+        <th>Total</th>
+        <th>Status</th>
+        {% if not show_customer %}<th></th>{% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+        <tr>
+          <td>{{ booking.hotel.name }}</td>
+          {% if show_customer %}<td>{{ booking.customer.email }}</td>{% endif %}
+          <td>{{ booking.start_date }} to {{ booking.end_date }}</td>
+          <td>{{ booking.nights }}</td>
+          <td>Rs. {{ booking.total_price }}</td>
+          <td>{{ booking.get_status_display }}</td>
+          {% if not show_customer %}
+            <td>
+              {% if booking.status == 'confirmed' %}
+                <form method="post" action="{% url 'cancel-booking' booking.pk %}">
+                  {% csrf_token %}
+                  <button class="danger" type="submit">Cancel</button>
+                </form>
+              {% endif %}
+            </td>
+          {% endif %}
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">No bookings yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

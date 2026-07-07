@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div>
+    <h1>Sign in</h1>
+    <p class="muted">Use your customer or vendor account. Vendors go straight to their dashboard.</p>
+  </div>
+  <form method="post" class="panel form-grid">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="primary" type="submit">Login</button>
+    <a href="{% url 'login-otp' %}">Login with OTP</a>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}My bookings{% endblock %}
+{% block content %}
+<section class="content-head">
+  <h1>My bookings</h1>
+</section>
+{% include 'hotels/booking_table.html' with show_customer=False %}
+{% endblock %}

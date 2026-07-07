@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Vendor dashboard{% endblock %}
+{% block content %}
+<section class="content-head">
+  <h1>Vendor dashboard</h1>
+  <a class="primary" href="{% url 'hotel-create' %}">Add hotel</a>
+</section>
+<section class="analytics-grid">
+  <div class="metric"><strong>{{ analytics.hotel_count }}</strong><span>Hotels</span></div>
+  <div class="metric"><strong>{{ analytics.confirmed_bookings }}</strong><span>Confirmed bookings</span></div>
+  <div class="metric"><strong>Rs. {{ analytics.revenue }}</strong><span>Revenue</span></div>
+  <div class="metric"><strong>{{ analytics.conversion_proxy }}%</strong><span>Occupancy signal</span></div>
+  <div class="metric"><strong>{{ analytics.avg_rating }}</strong><span>Average rating</span></div>
+  <div class="metric"><strong>{% if analytics.top_hotel %}{{ analytics.top_hotel.name }}{% else %}None{% endif %}</strong><span>Top hotel</span></div>
+</section>
+<section class="hotel-grid compact">
+  {% for hotel in hotels %}
+    <article class="hotel-card">
+      {% if hotel.primary_image %}
+        <img src="{{ hotel.primary_image }}" alt="{{ hotel.name }}">
+      {% else %}
+        <div class="image-placeholder">{{ hotel.location }}</div>
+      {% endif %}
+      <div class="hotel-body">
+        <h2>{{ hotel.name }}</h2>
+        <p class="muted">{{ hotel.location }} · Rs. {{ hotel.offer_price }}</p>
+        <div class="score-row">
+          <span class="score">Trust {{ hotel.trust_score }}</span>
+          <span class="score">Safety {{ hotel.safety_score }}%</span>
+        </div>
+        <div class="actions">
+          <a href="{% url 'hotel-update' hotel.slug %}">Edit</a>
+          <a href="{% url 'hotel-images' hotel.slug %}">Images</a>
+          <a href="{% url 'hotel-delete' hotel.slug %}">Delete</a>
+        </div>
+      </div>
+    </article>
+  {% empty %}
+    <p class="empty">No hotels yet. Add your first property.</p>
+  {% endfor %}
+</section>
+{% endblock %}

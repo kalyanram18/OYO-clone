@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<section class="content-head">
+  <h1>{{ title }}</h1>
+</section>
+<form method="post" enctype="multipart/form-data" class="panel form-grid wide">
+  {% csrf_token %}
+  {% for field in form %}
+    <p class="{% if field.field.widget.input_type == 'checkbox' %}checkbox-line{% endif %}">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
+      {% for error in field.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+    </p>
+  {% endfor %}
+  {% if image_form %}
+    <h2>Opening image</h2>
+    {{ image_form.as_p }}
+  {% endif %}
+  <button class="primary" type="submit">Save hotel</button>
+</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Hotel images{% endblock %}
+{% block content %}
+<section class="content-head">
+  <h1>{{ hotel.name }} images</h1>
+</section>
+<form method="post" enctype="multipart/form-data" class="panel form-grid">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="primary" type="submit">Upload</button>
+</form>
+<section class="image-admin-grid">
+  {% for image in hotel.images.all %}
+    <article class="panel">
+      <img src="{{ image.image.url }}" alt="{{ image.caption|default:hotel.name }}">
+      <form method="post" action="{% url 'image-delete' image.pk %}">
+        {% csrf_token %}
+        <button class="danger" type="submit">Delete</button>
+      </form>
+    </article>
+  {% endfor %}
+</section>
+{% endblock %}

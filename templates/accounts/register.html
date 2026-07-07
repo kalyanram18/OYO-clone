@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ account_type }} register{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div>
+    <h1>{{ account_type }} registration</h1>
+    <p class="muted">Create an account to {% if account_type == 'Vendor' %}manage hotels and track bookings{% else %}book stays and manage reservations{% endif %}.</p>
+  </div>
+  <form method="post" class="panel form-grid">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="primary" type="submit">Create account</button>
+  </form>
+</section>
+{% endblock %}

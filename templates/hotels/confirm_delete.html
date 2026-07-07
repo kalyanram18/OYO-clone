@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Delete hotel{% endblock %}
+{% block content %}
+<section class="panel confirm">
+  <h1>Delete {{ hotel.name }}?</h1>
+  <p class="muted">This removes the hotel, images, managers, and related booking records.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="danger" type="submit">Delete hotel</button>
+    <a href="{% url 'vendor-dashboard' %}">Cancel</a>
+  </form>
+</section>
+{% endblock %}
